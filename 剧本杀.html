@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腾冲非遗剧本杀</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a9a9a9 0%, #d2b48c 100%);
+            color: #333;
+        }
+
+       .title-bar {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #f8f8f8;
+            text-align: center;
+            padding: 20px 0;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 36px;
+		    animation: fadeInDown 1s ease-out;
+        }
+		
+		@keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        nav {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+			animation: fadeIn 1s ease-out;
+        }
+		
+		@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+			transition: color 0.3s ease;
+        }
+		
+		nav a:hover {
+            color: #d2b48c;
+        }
+
+       .container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        video {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            border: 5px solid #a9a9a9;
+        }
+
+       .character {
+            display: inline-block;
+            margin: 20px;
+        }
+
+       .character img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+       .highlight {
+            margin: 20px 0;
+        }
+
+       .review {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+       .review img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+       .recommendation {
+            margin: 20px 0;
+        }
+
+       .footer {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+		
+		.footer p {
+            margin: 5px 0;
+        }
+		
+		.footer a {
+            color: #d2b48c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+		
+		.footer a:hover {
+            color: white;
+        }
+
+       .review-form {
+            margin: 20px 0;
+        }
+
+       .review-form input,
+       .review-form textarea {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+       .story-intro {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+       .story-intro p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+       .story-intro p:first-child {
+            font-size: 20px;
+            font-weight: bold;
+            color: #555;
+        }
+
+       .story-intro p:last-child {
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title-bar">滇西遗韵・非遗探秘</div>
+    <nav>
+        <a href="首页.html">首页</a>
+        <a href="形象 IP.html">形象 IP</a>
+        <a href="旅游路线.html">旅游路线</a>
+        <a href="非遗文创产品.html">文创</a>
+		<a href="ai.html">AI助手</a>
+    </nav>
+    <div class="container">
+        <div class="story-intro">
+            <p>体验独特的腾冲非遗剧本杀，感受传统文化的魅力。</p>
+            <p>1944年，滇西腾冲战火熊熊。和顺古镇表面平静，实则暗潮汹涌。日军铁蹄践踏，间谍暗中作祟，非遗瑰宝岌岌可危。</p>
+            <p>身为怀揣爱国热忱的随军记者，你踏入这风云诡谲之地。柔弱绣娘阿月、油纸伞匠李老、肩负抗战使命的周团长，妄图摧毁抗日力量的山本一郎，还有看似普通却隐藏着惊人身份的随军记者陈骁。</p>
+            <p>各方汇聚，内鬼难辨，背叛与忠诚交织，家国危亡之际，抗日烽火燃于眉睫。 一场关乎民族命运与文化传承的较量轰然开场。</p>
+            <p>重重迷雾之中，你能否抽丝剥茧、揭开真相，守护腾冲山河与非遗之光 ？</p>
+        </div>
+        <video controls>
+            <source src="../网页图片和视频/腾冲1944.mp4" type="video/mp4">
+        </video>
+
+        <!-- 剧本杀角色详细介绍 -->
+        <h2>剧本杀角色介绍</h2>
+        <div class="character">
+            <img src="../网页图片和视频/阿月.jpg" alt="阿月">
+            <p>绣娘阿月：看似柔弱，却因守护非遗刺绣技艺卷入纷争，内心坚定守护着家乡文化。</p>
+        </div>
+        <div class="character">
+            <img src="../网页图片和视频/李老.jpg" alt="李老">
+            <p>油纸伞匠李老：当地德高望重的匠人，制作的油纸伞精美绝伦，可能知晓重要抗日线索。</p>
+        </div>
+        <div class="character">
+            <img src="../网页图片和视频/周团长.jpg" alt="周团长">
+            <p>周团长：肩负抗战使命，坚决打击日寇，是抗日力量的核心人物。</p>
+        </div>
+        <div class="character">
+            <img src="../网页图片和视频/山本一郎.jpg" alt="山本一郎">
+            <p>山本一郎：阴险狡诈的日本军官，妄图摧毁腾冲的抗日力量和非遗文化。</p>
+        </div>
+        <div class="character">
+            <img src="../网页图片和视频/陈骁.jpg" alt="陈骁">
+            <p>陈骁：表面是随军记者，用文字与镜头记录战事，实则是潜伏的情报人员。使命是获取日军机密情报，为腾冲战役的胜利提供关键信息。眼神中藏着锐利，但笑容却能轻易融入人群。</p>
+        </div>
+
+        <!-- 剧本杀亮点展示 -->
+        <h2>剧本杀亮点</h2>
+        <div class="highlight">
+            <p> - 融入真实腾冲非遗制作工艺体验，玩家可亲手尝试制作简单非遗作品。</p>
+            <p> - 高度还原腾冲古镇风貌，从建筑到生活细节，让玩家身临其境。</p>
+            <p> - 剧情跌宕起伏，充满反转，每个线索都可能改变故事走向。</p>
+        </div>
+
+        <!-- 用户评价区 -->
+        <h2>用户评价</h2>
+        <div class="review">
+            <img src="https://dummyimage.com/50x50/000/fff&text=用户1" alt="用户1">
+            <p>用户1：这个剧本杀的剧情太精彩了，我完全沉浸在那个战火纷飞又充满文化底蕴的腾冲世界里。</p>
+            <p>评价时间：2025年3月10日</p>
+        </div>
+        <div class="review">
+            <img src="https://dummyimage.com/50x50/000/fff&text=用户2" alt="用户2">
+            <p>用户2：通过这个剧本杀，我对腾冲非遗有了更深的了解，真的太有意义了。</p>
+            <p>评价时间：2025年3月15日</p>
+        </div>
+        <div id="reviews-container"></div>
+        <div class="review-form">
+            <input type="text" id="username" placeholder="请输入您的昵称">
+            <textarea id="review-content" placeholder="请输入您的评价内容"></textarea>
+            <button onclick="submitReview()">提交评价</button>
+        </div>
+
+        <!-- 相关推荐 -->
+        <h2>相关推荐</h2>
+        <div class="recommendation">
+            <p> - 其他相关剧本杀作品：《腾冲风云》，带你继续体验腾冲的历史与文化。</p>
+            <p> - 线下剧本杀门店：腾冲XX剧本杀馆，地址：腾冲市XX路XX号，联系电话：123456789。</p>
+            <p> - 相关书籍纪录片：《腾冲抗战史》书籍、《滇西抗战风云》纪录片。</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>©2025 腾冲红色旅游 + 非遗网站版权所有</p>
+        <p>联系电话：123456789 | 电子邮箱：tengchong@qq.com</p>
+        <p>友情链接：<a href="https://tengchongtour.gov.cn">腾冲旅游局官网</a></p>
+    </div>
+    <script>
+        function submitReview() {
+            const username = document.getElementById('username').value;
+            const reviewContent = document.getElementById('review-content').value;
+            if (username && reviewContent) {
+                const now = new Date();
+                const reviewDate = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+                const reviewContainer = document.getElementById('reviews-container');
+                const reviewDiv = document.createElement('div');
+                reviewDiv.classList.add('review');
+                reviewDiv.innerHTML = `
+                    <img src="https://dummyimage.com/50x50/000/fff&text=${username}" alt="${username}">
+                    <p>${username}：${reviewContent}</p>
+                    <p>评价时间：${reviewDate}</p>
+                `;
+                reviewContainer.appendChild(reviewDiv);
+                document.getElementById('username').value = '';
+                document.getElementById('review-content').value = '';
+            } else {
+                alert('请输入昵称和评价内容！');
+            }
+        }
+    </script>
+</body>
+
+</html>    

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腾冲红旅AI助手</title>
+    <style>
+       .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a9a9a9 0%, #d2b48c 100%);
+            color: #333;
+        }
+
+       .title-bar {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #f8f8f8;
+            text-align: center;
+            padding: 20px 0;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 36px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        nav {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #d2b48c;
+        }
+
+       .chat-container {
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            margin: 20px auto;
+        }
+
+       .chat-header {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+       .chat-body {
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+       .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+       .message.user {
+            justify-content: flex-end;
+        }
+
+       .message.assistant {
+            justify-content: flex-start;
+        }
+
+       .message-bubble {
+            max-width: 80%;
+            padding: 12px;
+            border-radius: 12px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+       .message.user .message-bubble {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            margin-right: 10px;
+        }
+
+       .message.assistant .message-bubble {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            margin-left: 10px;
+            border: 1px solid #ddd;
+        }
+
+       .message-bubble::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+        }
+
+       .message.user .message-bubble::after {
+            right: -16px;
+            border-left-color: rgba(51, 51, 51, 0.6);
+        }
+
+       .message.assistant .message-bubble::after {
+            left: -16px;
+            border-right-color: rgba(255, 255, 255, 0.8);
+        }
+
+       .chat-input-container {
+            display: flex;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid #ddd;
+        }
+
+       .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+        }
+
+       .chat-input:focus {
+            border-color: rgba(51, 51, 51, 0.6);
+        }
+
+       .send-button {
+            margin-left: 10px;
+            padding: 12px 20px;
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+       .send-button:hover {
+            background-color: rgba(51, 51, 51, 0.8);
+        }
+
+       .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+       .message.assistant .avatar {
+            margin-right: 10px;
+        }
+
+       .message.user .avatar {
+            display: none;
+        }
+
+       .message-source {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            text-align: right;
+            font-style: italic;
+        }
+
+       .typing-indicator {
+            display: inline-block;
+            padding-left: 15px;
+        }
+
+       .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #999;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 3px;
+            animation: typing 1s infinite ease-in-out;
+        }
+
+       .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+       .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+       .footer {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+       .footer p {
+            margin: 5px 0;
+        }
+
+       .footer a {
+            color: #d2b48c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+       .footer a:hover {
+            color: white;
+        }
+    </style>
+    <script>
+        // 腾冲知识库 - 从数据网页中提取的结构化数据
+        const TENGCHONG_KNOWLEDGE = {
+            // 自然景观类
+            "自然景观类": "腾冲自然景观类的景点有热海景区，北海湿地，火山地质公园（腾冲火山群），叠水河瀑布等",
+            "热海景区": {
+                "亮点": "腾冲地热标志性景点，有'大滚锅'沸泉（水温高达96℃）、珍珠泉、怀胎井等地热奇观，可体验温泉浴（如浴谷温泉）",
+                "玩法": "徒步地热峡谷，煮温泉蛋，泡天然硫磺泉"
+            },
+            "火山地质公园（腾冲火山群）": {
+                "亮点": "中国四大火山群之一，有97座火山锥，包括大空山、小空山等",
+                "玩法": "徒步火山口，乘坐热气球俯瞰火山群（天气允许时）"
+            },
+            "北海湿地": {
+                "亮点": "高原火山堰塞湖湿地，秋季草排变金黄，被誉为'漂浮的草原'",
+                "玩法": "划草排、观鸟、摄影"
+            },
+            "叠水河瀑布": {
+                "亮点": "城市中的瀑布，落差约40米，瀑布上方有明代龙光台古寺"
+            },
+
+            // 历史文化类
+            "腾冲历史文化类": "腾冲历史文化类的景点有和顺古镇，国殇墓园 & 滇西抗战纪念馆，云峰山",
+            "和顺古镇": {
+                "亮点": "600年历史的侨乡，明清古建筑、祠堂、图书馆（和顺图书馆是中国最大乡村图书馆之一），《我的团长我的团》取景地",
+                "玩法": "漫步青石板路，参观艾思奇故居、弯楼子民居博物馆"
+            },
+            "国殇墓园 & 滇西抗战纪念馆": {
+                "亮点": "纪念中国远征军和滇西抗战的历史场馆，墓园安葬数千烈士，极具爱国主义教育意义"
+            },
+            "云峰山": {
+                "亮点": "道教名山，山顶云峰寺建于悬崖之上，需攀爬'三折云梯'（约1000级台阶）"
+            },
+
+            // 边境与民俗体验
+            "腾冲边境与民俗体验的场所": "腾冲边境与民俗体验的场所有银杏村（固东镇江东村），司莫拉佤族村，猴桥口岸等",
+            "银杏村（固东镇江东村）": {
+                "亮点": "3000多棵古银杏树，秋季（11 - 12月）金黄铺地，摄影天堂",
+                "贴士": "旺季游客较多，建议清晨前往"
+            },
+            "司莫拉佤族村": {
+                "亮点": "原始佤族村落，保留传统祭祀台、图腾等文化符号，田园风光秀丽"
+            },
+            "猴桥口岸": {
+                "亮点": "中缅边境口岸，可感受边贸风情（需提前确认开放政策）"
+            },
+
+            // 温泉推荐
+            "腾冲温泉推荐": "腾冲温泉推荐的地方有悦椿温泉，荷花温泉，柏联温泉",
+            "悦椿温泉": "高端温泉度假村，环境私密",
+            "荷花温泉": "森林温泉，性价比高",
+            "柏联温泉": "和顺古镇附近，古朴雅致",
+
+            // 非物质文化遗产
+            "腾冲非遗传统技艺类": "腾冲非遗传统技艺类有腾冲皮影戏（腾冲皮影制作技艺），腾冲宣纸制作技艺，腾冲油纸伞制作技艺等",
+            "腾冲皮影戏（腾冲皮影制作技艺）": {
+                "类别": "传统戏剧、传统美术",
+                "简介": "腾冲皮影戏源于明代，融合中原文化与边疆特色，影人雕刻精细，色彩艳丽，表演时配以方言唱腔和民间乐器",
+                "现状": "传承人较少，主要分布在固东镇刘家寨等地"
+            },
+            "腾冲宣纸制作技艺": {
+                "类别": "传统技艺",
+                "简介": "腾冲宣纸以构树皮为原料，手工抄制，纸质绵韧、润墨性好，被誉为'千年寿纸'，与安徽宣纸齐名",
+                "代表": "界头镇新庄村仍保留传统作坊"
+            },
+            "腾冲油纸伞制作技艺": {
+                "类别": "传统技艺",
+                "简介": "以本地毛竹、桐油、棉纸为材料，纯手工制作，伞面绘有花鸟山水，兼具实用与艺术价值",
+                "现状": "荥阳村是主要传承地，但从业者已稀少"
+            },
+            "腾冲非遗民俗节庆类": "腾冲非遗民俗节庆类有佤族清戏，傈僳族刀杆节，腾冲洞经音乐等",
+            "佤族清戏": {
+                "类别": "传统戏剧",
+                "简介": "腾冲佤族特有的戏曲形式，唱腔高亢，内容多表现神话、历史故事，表演时戴木质面具，具原始宗教色彩"
+            },
+            "傈僳族刀杆节": {
+                "类别": "民俗",
+                "简介": "傈僳族传统节日，农历二月初八举行，勇士赤脚攀爬36米高的刀梯（刀刃向上），展现无畏精神"
+            },
+            "腾冲洞经音乐": {
+                "类别": "传统音乐",
+                "简介": "明清时期传入的道教音乐，融合儒家礼乐，演奏乐器包括古筝、琵琶、笛子等，曲调庄重典雅"
+            },
+            "腾冲非遗传统医药类": "腾冲非遗传统医药类有腾冲中医药文化（李仲愚传统医药）",
+            "腾冲中医药文化（李仲愚传统医药）": {
+                "类别": "传统医药",
+                "简介": "腾冲自古是南方丝绸之路重镇，中医药融合汉、傣、彝等民族疗法，以草药外敷、针灸为特色"
+            },
+            "腾冲非遗饮食文化类": "腾冲非遗饮食文化类有腾冲饵丝制作技艺，土锅子（火山热海陶罐宴）等",
+            "腾冲饵丝制作技艺": {
+                "类别": "传统技艺",
+                "简介": "以大米为原料，经舂、揉、切等工序制成，口感软糯，代表小吃如'大救驾'（炒饵块）"
+            },
+            "土锅子（火山热海陶罐宴）": {
+                "类别": "饮食习俗",
+                "简介": "用本地陶土锅慢火炖煮食材，汤底以骨汤或菌汤为主，是腾冲传统宴客菜"
+            },
+            "其他非遗项目": "其他非遗项目有彝族火把节（民俗），傣族泼水节（民俗），藤编技艺（传统手工艺）",
+
+            // 红色景点
+            "腾冲的红色景点": "腾冲的红色景点有国殇墓园，滇西抗战纪念馆，来凤山抗战遗址，和顺图书馆抗战文化展，勐连抗战江防遗址等",
+            "国殇墓园": "国殇墓园是腾冲最具代表性的红色景点，始建于1945年，是为纪念中国远征军第20集团军在滇西抗战中收复腾冲阵亡将士而建。墓园内安葬着9618名烈士，主体建筑包括忠烈祠、烈士冢、纪念塔等，其中纪念塔高31米，象征腾冲在1944年光复。墓园内松柏苍翠，庄严肃穆，每年有大量游客和抗战老兵后代前来祭奠，现为全国重点文物保护单位、国家级抗战纪念设施",
+            "滇西抗战纪念馆": "滇西抗战纪念馆位于国殇墓园东侧，是一座全面展示滇西抗战历史的专题纪念馆。馆内陈列分为'抗战后方''御敌前线''怒江对峙''绝地反攻''逐寇出境'等部分，通过大量实物、照片和文献资料，生动再现了中国远征军、盟军和滇西民众共同抗击日寇的历史。纪念馆建筑外观呈'V'字形，象征胜利，馆藏文物达12万件，是研究滇西抗战的重要基地",
+            "来凤山抗战遗址": "来凤山抗战遗址是腾冲城区的制高点，1944年滇西反攻时，中国远征军在此与日军激战七天七夜。现存战壕、碉堡、弹坑等战争遗迹，山上的文笔塔在战斗中曾被日军用作瞭望哨，塔身弹痕至今清晰可见。该遗址是滇西抗战中城市攻坚战的重要见证，现建有纪念碑和展示牌，供后人凭吊这段血与火的历史",
+            "和顺图书馆抗战文化展": "和顺图书馆抗战文化展不仅是著名侨乡文化地标，还保存着丰富的抗战文献。馆内特设抗战文化展区，展示当年远征军将士使用过的物品、战地照片和《腾越日报》等珍贵史料，反映了腾冲民众支援抗战的感人事迹。著名学者艾思奇（李生萱）的故居也在此附近，他曾以笔为枪参与抗日宣传",
+            "勐连抗战江防遗址": "勐连抗战江防遗址位于腾冲市勐连镇龙川江畔，是1942 - 1944年怒江防线的重要组成部分。中国军队在此构筑工事阻止日军东进，现存江防碉堡、炮兵阵地等遗迹。附近的'军民合作站'遗址，见证了当地少数民族群众为远征军运送粮弹、救护伤员的英勇事迹，体现了民族团结抗战的精神",
+
+            // 传统手工艺
+            "腾冲陶器": "腾冲陶器是云南特色传统手工艺，以火山黏土为原料，采用600年历史的古法龙窑柴烧技艺制作，成品具有耐高温、保鲜性好的特点。最具代表性的是腾冲土锅子，采用独特配方陶土制成，能使食材保持原汁原味，已成为当地饮食文化的重要标志。腾冲陶器制作技艺于2017年被列入保山市非物质文化遗产，界头镇至今仍保留着完整的传统作坊，游客可在此体验手工制陶过程。这些质朴厚重的陶器不仅是生活用具，更承载着腾冲多民族融合的历史记忆",
+            "腾冲陶器的代表传承人": "李润枝（女）马站乡三联村唯一女性传承人，专攻传统瓦猫制作，作品融合白族瓦当文化，带动20余名妇女成立制陶合作社",
+            "腾冲古法抄纸": "腾冲古法抄纸是云南省级非物质文化遗产，以高黎贡山特有的滇结香树皮为原料，完整保留了明代《天工开物》记载的72道手工工序。其制作需经浸泡、蒸煮、捶打、抄纸、晾晒等环节，成品纸张具有纤维长、韧性好、防虫蛀的特性，被誉为'千年不腐'的活化石。和顺古镇的龙姓家族自清代道光年间传承此技艺至今，所产腾宣纸因墨韵层次丰富，深受书画家青睐，徐悲鸿抗战时期在腾冲创作时就特别指定使用。目前，界头镇新庄村仍保留着云南唯一完整的手工造纸作坊群，游客可体验古法抄纸全过程，这项技艺见证了腾冲作为南方丝绸之路重镇的商贸文化历史",
+            "腾冲藤编": "腾冲藤编是云南省级非物质文化遗产，以高黎贡山特有的野藤为原料，经削皮、浸泡、编织等18道纯手工工序制成。其特色在于'藤篾交织'技法，成品兼具韧性与透气性，尤以藤编茶具、收纳筐最为著名。固东镇和平社区至今保留着完整的藤编工坊，这项技艺见证了腾冲作为南方丝绸之路驿站的历史，其产品曾远销缅甸、印度等地",
+            "腾冲玉雕": "腾冲玉雕以'滇玉之首'的黄龙玉为主要材质，传承了明清时期'巧色俏雕'技艺，尤其擅长利用玉料天然纹理创作。荷花镇玉雕作坊群现存30多位传承人，其作品以'腾越十二生肖'系列最具代表性，刀法融合了汉文化吉祥图案与边疆少数民族图腾。2019年腾冲被授予'中国黄龙玉雕之乡'称号，玉雕大师杨树明的《清明上河图》玉雕曾获中国工艺美术金奖",
+            "艾思奇故居与腾冲抗战纪念馆": "艾思奇故居位于和顺古镇水碓村，完整保留了这位马克思主义哲学家幼年生活的场景，馆内陈列其《大众哲学》手稿及使用过的油印机。毗邻的腾冲抗战纪念馆以'滇西抗战'为主题，通过国殇墓园出土文物、美军飞虎队装备等2000余件展品，再现了松山战役、腾冲光复等历史事件。该建筑群由远征军司令部旧址改造而成，其'忠烈祠'内供奉着9618位阵亡将士灵位，是国家级抗战纪念设施"
+        };
+
+        // 腾冲县专属关键词列表
+        const TENGCHONG_KEYWORDS = [
+            "腾冲", "和顺", "热海", "火山地质公园", "北海湿地",
+            "国殇墓园", "银杏村", "云峰山", "勐连", "猴桥",
+            "固东", "界头", "滇西抗战", "龙川江", "高黎贡山",
+            "大滚锅", "叠水河", "悦椿温泉", "柏联温泉", "荷花温泉",
+            "皮影戏", "宣纸", "油纸伞", "饵丝", "土锅子"
+        ];
+
+        // 真实API调用
+        async function getStrictTengchongResponse(question) {
+            try {
+                const response = await fetch('https://api.chatanywhere.tech/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer sk-ySrCwGGgavz9RhyYI0Pzhf7Sz9p4HuvYnP3OfJEI3SnoRvP0'
+                    },
+                    body: JSON.stringify({
+                        'model': 'gpt-3.5-turbo',
+                        'messages': [
+                            {
+                                'role': 'system',
+                                'content': `你必须是腾冲县专属助手，请严格遵守：
+1. 所有回答必须严格限定在云南省保山市腾冲县范围内
+2. 如果问题涉及云南其他地区，必须回答"该信息不属于腾冲县"
+3. 优先使用以下腾冲专属关键词：${TENGCHONG_KEYWORDS.join('、')}
+4. 历史事件必须标注"滇西抗战"等腾冲标识
+5. 地理描述要精确到乡镇（如固东镇、界头镇）`
+                            },
+                            {
+                                'role': 'user',
+                                'content': question
+                            }
+                        ],
+                        'temperature': 0.2,
+                        'max_tokens': 500
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                let answer = data.choices[0].message.content.trim();
+
+                // 二次验证是否包含腾冲关键词
+                const isTengchong = TENGCHONG_KEYWORDS.some(kw => answer.includes(kw));
+                if (!isTengchong) {
+                    answer = "【注意】以下信息可能不专属腾冲县：\n" + answer;
+                }
+
+                return {
+                    answer: answer,
+                    source: isTengchong ? "腾冲县可信来源" : "需确认地域范围"
+                };
+            } catch (error) {
+                console.error('API调用错误:', error);
+                return {
+                    answer: '请通过腾冲县人民政府网等官方渠道查询该信息',
+                    source: "系统提示"
+                };
+            }
+        }
+
+        // 添加助手消息
+        function addAssistantMessage(text, source) {
+            const chatBody = document.getElementById('chat-body');
+            const msg = document.createElement('div');
+            msg.className = 'message assistant';
+            msg.innerHTML = `
+                <img src="https://img1.qunarzz.com/travel/d8/1711/7d/863154d33d84dbb5.jpg_r_1360x1360x95_440d7bbb.jpg" class="avatar">
+                <div class="message-bubble">${text}<div class="message-source">来源: ${source}</div></div>
+            `;
+            chatBody.appendChild(msg);
+            scrollToBottom();
+        }
+
+        // 添加用户消息
+        function addUserMessage(text) {
+            const chatBody = document.getElementById('chat-body');
+            const msg = document.createElement('div');
+            msg.className = 'message user';
+            msg.innerHTML = `
+                <div class="message-bubble">${text}</div>
+            `;
+            chatBody.appendChild(msg);
+            scrollToBottom();
+        }
+
+        // 显示"正在输入"指示器
+        function showTypingIndicator() {
+            const chatBody = document.getElementById('chat-body');
+            const indicator = document.createElement('div');
+            indicator.className = 'message assistant';
+            indicator.id = 'typing-indicator';
+            indicator.innerHTML = `
+                <img src="https://img1.qunarzz.com/travel/d8/1711/7d/863154d33d84dbb5.jpg_r_1360x1360x95_440d7bbb.jpg" class="avatar">
+                <div class="message-bubble">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            chatBody.appendChild(indicator);
+            scrollToBottom();
+            return indicator;
+        }
+
+        // 隐藏"正在输入"指示器
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatBody = document.getElementById('chat-body');
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // 发送消息函数
+        async function sendMessage() {
+            const messageText = document.getElementById('chat-input').value.trim();
+            if (!messageText) return;
+
+            // 添加用户消息
+            addUserMessage(messageText);
+            document.getElementById('chat-input').value = '';
+
+            // 显示"正在输入"指示器
+            const indicator = showTypingIndicator();
+
+            try {
+                // 先在本地知识库中查找答案
+                let found = false;
+                for (const keyword in TENGCHONG_KNOWLEDGE) {
+                    if (messageText.includes(keyword)) {
+                        let answer;
+                        if (typeof TENGCHONG_KNOWLEDGE[keyword] === 'object') {
+                            // 格式化对象数据
+                            answer = Object.entries(TENGCHONG_KNOWLEDGE[keyword])
+                                .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                                .join('<br>');
+                        } else {
+                            answer = TENGCHONG_KNOWLEDGE[keyword];
+                        }
+                        hideTypingIndicator();
+                        addAssistantMessage(answer, "腾冲县本地数据");
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    // 调用真实API
+                    const response = await getStrictTengchongResponse(messageText);
+                    hideTypingIndicator();
+                    addAssistantMessage(response.answer, response.source);
+                }
+            } catch (error) {
+                console.error('发送消息失败:', error);
+                hideTypingIndicator();
+                addAssistantMessage('网络错误，请稍后再试', "系统提示");
+            }
+        }
+
+        // 设置事件监听
+        document.addEventListener('DOMContentLoaded', function () {
+            // 发送按钮点击事件
+            document.getElementById('send-button').addEventListener('click', sendMessage);
+
+            // 输入框回车事件
+            document.getElementById('chat-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="title-bar">腾冲-红色传承与非遗魅力之旅</div>
+    <nav>
+		<a href="首页.html">首页</a>
+        <a href="剧本杀.html">剧本杀</a>
+        <a href="形象 IP.html">形象 IP</a>
+        <a href="旅游路线.html">旅游路线</a>
+        <a href="非遗文创产品.html">文创</a>
+    </nav>
+    <div class="chat-container">
+        <div class="chat-header">腾冲红旅AI助手</div>
+        <div class="chat-body" id="chat-body">
+            <div class="message assistant">
+                <img src="https://img1.qunarzz.com/travel/d8/1711/7d/863154d33d84dbb5.jpg_r_1360x1360x95_440d7bbb.jpg" alt="AI头像" class="avatar">
+                <div class="message-bubble">
+                    您好！我是腾冲县专属AI助手，可以为您解答关于腾冲红色旅游、非遗文化、景点信息等各种问题。
+                    <div class="message-source">来源: 腾冲县本地数据</div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chat-input" placeholder="输入您关于腾冲县的问题..." autocomplete="off">
+            <button class="send-button" id="send-button">发送</button>
+        </div>
+    </div>
+    <div class="footer">
+        <p>©2025 腾冲红色旅游 + 非遗网站版权所有</p>
+        <p>联系电话：123456789 | 电子邮箱：tengchong@qq.com</p>
+        <p>友情链接：<a href="https://tengchongtour.gov.cn">腾冲旅游局官网</a></p>
+    </div>
+</body>
+
+</html>
+    

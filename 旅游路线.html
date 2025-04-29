@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腾冲非遗旅游路线</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a9a9a9 0%, #d2b48c 100%);
+            color: #333;
+        }
+
+       .title-bar {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #f8f8f8;
+            text-align: center;
+            padding: 20px 0;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 36px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        nav {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #d2b48c;
+        }
+
+       .container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            display: inline-block;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+       .shutter {
+            width: 80%;
+            max-width: 1000px;
+            height: 300px;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+            animation: scaleIn 1s ease-out;
+            display: flex;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+       .shutter img {
+            width: 20%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+       .shutter img:hover {
+            transform: scale(1.2);
+        }
+
+       .main {
+            padding: 20px;
+        }
+
+       .main .contents {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+       .main .contents img {
+            width: 20%;
+            max-width: 200px;
+            height: auto;
+            object-fit: cover;
+            border: 3px solid #a9a9a9;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+       .main .contents img:hover {
+            transform: scale(0.9);
+        }
+
+       .main .contents p {
+            text-align: left;
+        }
+
+       .footer {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+       .footer p {
+            margin: 5px 0;
+        }
+
+       .footer a {
+            color: #d2b48c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+       .footer a:hover {
+            color: white;
+        }
+
+       .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+       .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+       .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+       .close:hover,
+       .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+       .zoom-hint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            animation: pulse 2s infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+       .route-map-item:hover .zoom-hint {
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title-bar">腾冲非遗旅游路线</div>
+    <nav>
+        <a href="首页.html">首页</a>
+        <a href="剧本杀.html">剧本杀</a>
+        <a href="形象 IP.html">形象 IP</a>
+        <a href="非遗文创产品.html">文创</a>
+        <a href="ai.html">AI助手</a>
+    </nav>
+    <div class="main">
+        <div class="contents">
+            <img src="../网页图片和视频/旅游路线图.png" alt="路线图" onclick="openModal(this.src)">
+            <div>
+                <h3>旅游路线</h3>
+                <p>各位游客朋友们，欢迎来到腾冲！初次来腾冲，好玩的地方可真不少。
+从腾冲市区出发，8 分钟车程到和顺古镇。这里明清古建筑保存完好，走在石板路上，能感受深厚历史韵味，还能品尝特色美食。35 分钟车程可达火山地质公园，它是中国四大火山群之一，您能欣赏独特火山地貌，清晨乘热气球俯瞰更是震撼。热海景区距离市区仅 18 分钟车程，这里温泉水温高达 90 摄氏度，富含矿物质，对身体有益。大滚锅尤为著名，昼夜翻滚沸腾，热气蒸腾。
+北海湿地是云南省最大淡水湖、全国少数火山堰塞湖之一，23 分钟车程可至。湖水清澈，四周环山，乘船游览，湖光山色尽收眼底。驾车 29 分钟能到云峰山，这里春季油菜花海与晨雾相伴，登顶可赏云海，还能祈福许愿。
+此外，手工造纸博物馆、东山草原、司莫拉佤族村等景点，也都各具特色，能让您深度体验腾冲的魅力。希望大家在腾冲玩得开心，留下美好回忆！</p>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="contents">
+            <div>
+                <h3>景点信息</h3>
+                <p>各位游客朋友，快来看看腾冲这些迷人景点！
+热海风景区，门票 50 元，08:00 - 20:00 开放。这里热泉遍布，大滚锅闻名遐迩，可体验温泉煮物，感受独特地热魅力。
+和顺古镇，门票 55 元，07:30 - 22:00 开放。古镇古建悠悠，巷道纵横，漫步其中，能领略侨乡文化与传统韵味。
+北海湿地，门票 55 元，08:30 - 19:00 开放。独特湿地景观，春夏繁花似锦，可赏景划船，亲近自然。
+火山地热国家地质公园，门票 35 元，08:00 - 18:00 开放。能探秘火山遗迹，登火山口，观奇特地质风貌。
+云峰山，门票 40 元，08:30 - 18:30 开放。山林清幽，登顶可观云海，也是祈福好去处。
+腾冲悦椿温泉村，门票 30 元，08:20 - 19:00 开放，能享受舒适温泉。腾冲洞山温泉村较贵，235 元，12:00 - 21:30 开放，提供高品质温泉体验。
+叠水河瀑布，门票 10 元，08:00 - 17:00 开放，可赏瀑布飞泻壮观。
+国殇墓园、司莫拉佤族村、龙江大桥、高黎贡山、滇西抗战纪念馆免费开放 。国殇墓园缅怀先烈；司莫拉佤族村体验民族风情；龙江大桥气势恢宏；高黎贡山生态丰富；滇西抗战纪念馆铭记历史。东山草原门票 65 元且全天开放，可赏辽阔草景。</p>
+            </div>
+            <img src="../网页图片和视频/景点信息.png" alt="景点信息" onclick="openModal(this.src)">
+        </div>
+    </div>
+    <div class="container">
+        <p>以下是一些腾冲非遗旅游路线推荐：</p>
+        <ul>
+            <li>路线一：参观腾冲皮影戏馆 - 体验腾冲土陶制作 - 品尝腾冲特色美食</li>
+            <li>路线二：游览和顺古镇（感受侨乡文化） - 观看腾冲傩戏表演 - 购买腾冲宣纸</li>
+        </ul>
+    </div>
+    <div class="shutter">
+        <img src="../网页图片和视频/风景1.png" alt="景点1">
+        <img src="../网页图片和视频/风景2.jpg" alt="景点2">
+        <img src="../网页图片和视频/风景3.png" alt="景点3">
+        <img src="../网页图片和视频/风景4.png" alt="景点4">
+        <img src="../网页图片和视频/风景5.png" alt="景点5">
+    </div>
+    <div class="footer">
+        <p>©2025 腾冲红色旅游 + 非遗网站版权所有</p>
+        <p>联系电话：123456789 | 电子邮箱：tengchong@qq.com</p>
+        <p>友情链接：<a href="https://tengchongtour.gov.cn">腾冲旅游局官网</a></p>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01" alt="放大查看的线路图">
+    </div>
+
+    <script>
+        function openModal(imgSrc) {
+            const modal = document.getElementById('myModal');
+            const modalImg = document.getElementById('img01');
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+
+            const span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
+    
